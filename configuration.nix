@@ -88,6 +88,8 @@
 
   services.gvfs.enable = true;
 
+  # to make pass work
+  services.passSecretService.enable = true;
   services.pcscd.enable = true;
   programs.gnupg.agent = {
     enable = true;
@@ -95,6 +97,7 @@
     enableSSHSupport = true;
   };
   programs.seahorse.enable = true;
+
 
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
