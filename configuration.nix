@@ -36,11 +36,12 @@
     enable = true;
     xkb.layout = "us";
     xkb.variant = "";
-    displayManager = {
-      sddm.enable = true;
-      sddm.theme = "${import ./sddm-theme.nix { inherit pkgs; }}";
-    };
   };
+
+	services.displayManager.sddm = {
+		enable = true;
+		theme = "${import ./sddm-theme.nix { inherit pkgs; }}";
+	};
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.polen = {
@@ -93,7 +94,7 @@
   services.pcscd.enable = true;
   programs.gnupg.agent = {
     enable = true;
-    pinentryFlavor = "gnome3";
+    pinentryPackage = "gnome3";
     enableSSHSupport = true;
   };
   programs.seahorse.enable = true;
