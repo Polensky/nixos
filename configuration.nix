@@ -65,7 +65,6 @@
     ranger
     git
     home-manager
-    pinentry-curses
 
     waybar
     mako
@@ -94,7 +93,7 @@
   services.pcscd.enable = true;
   programs.gnupg.agent = {
     enable = true;
-    pinentryPackage = "gnome3";
+    pinentryPackage = pkgs.pinentry-gnome3;
     enableSSHSupport = true;
   };
   programs.seahorse.enable = true;

@@ -1,11 +1,6 @@
 { pkgs }:
 let
-  imgLink = "https://github.com/dharmx/walls/blob/main/nature/forrest-cavale-qfmd9bu7IgA-unsplash.jpg?raw=true";
-
-  image = pkgs.fetchurl {
-    url = imgLink;
-    sha256 = "sha256-tyXg61N94KxGTmcY5nyZ2bE7AyDZsnYd5jMO5/j2jgo=";
-  };
+  image = ./assets/a_forest_of_trees_with_fog.jpg;
 in
 pkgs.stdenv.mkDerivation {
   name = "sddm-theme";
