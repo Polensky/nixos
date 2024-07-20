@@ -17,31 +17,26 @@
   };
 
   outputs = { nixpkgs, home-manager, ... }@inputs:
-    let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        config = { allowUnfree = true; };
-        overlays = [
-          (final: prev: {
-            neovim = inputs.nixvim-flake.packages.${system}.default;
-          })
-        ];
-      };
-    in {
-      homeConfigurations.polen = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+			let
+				mkHomeConfig = machineModule: system: home-manager.lib.homeManagerConfiguration {
+					pkgs = import nixpkgs {
+						inherit system;
+						config = { allowUnfree = true; };
+						overlays = [
+							(final: prev: {
+								neovim = inputs.nixvim-flake.packages.${system}.default;
+							})
+						];
+					};
 
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
-        modules = [ 
-          ./home.nix
-          ./modules
-        ];
+					modules = [ 
+						./modules
+						machineModule
+					];
 
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
-        extraSpecialArgs = { inputs = inputs; };
-      };
-    };
+					extraSpecialArgs = { inherit system inputs; };
+				};
+			in {
+				homeConfigurations."polen@xps13" = mkHomeConfig ./machines/xps13.nix "x86_64-linux";
+			};
 }

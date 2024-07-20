@@ -16,9 +16,9 @@ let
           ;;
         status)
           if tmux ls | grep -q pm-bridge ; then
-            echo "Protonmail-bridge is down"
-          else
             echo "Protonmail-bridge is up"
+          else
+            echo "Protonmail-bridge is down"
           fi
           ;;
         attach)
