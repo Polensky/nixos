@@ -9,6 +9,14 @@
     ./hardware-configuration.nix
   ];
 
+	hardware.bluetooth = {
+		enable = true;
+		powerOnBoot = true;
+	};
+	services.blueman.enable = true;
+
+	virtualisation.waydroid.enable = true;
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
