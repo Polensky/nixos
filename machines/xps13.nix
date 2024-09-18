@@ -59,9 +59,6 @@
 
 		# dev
 		lazygit
-    go
-    gopls
-    gotools
     gnumake
 
     font-awesome
