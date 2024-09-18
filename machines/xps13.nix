@@ -31,11 +31,14 @@
     zathura
     vimiv-qt
     pcmanfm
+		newsboat
 
+		# 3D stuff
     prusa-slicer
     openscad
     freecad
     blender
+		inkscape
 
     foot
     alacritty
@@ -54,19 +57,12 @@
     pamixer
     playerctl
 
+		# dev
+		lazygit
     go
     gopls
     gotools
     gnumake
-
-    # Email
-    neomutt
-    mutt-wizard
-    isync
-    msmtp
-    lynx
-    notmuch
-    abook
 
     font-awesome
     (nerdfonts.override { fonts = [ "FiraCode" ]; })
@@ -83,6 +79,9 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
+		(writeShellScriptBin "hms" ''
+			home-manager switch --flake ~/.config/home-manager#polen@xps13
+		'')
   ];
 
   fonts.fontconfig.enable = true;
@@ -102,6 +101,11 @@
       "image/*" = ["vimiv.desktop"];
     };
   };
+
+	programs.direnv = {
+		enable = true;
+		nix-direnv.enable = true;
+	};
 
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
