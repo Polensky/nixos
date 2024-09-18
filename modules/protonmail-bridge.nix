@@ -6,6 +6,7 @@ let
   pm-bridge-script = pkgs.writeShellApplication {
     name = "pm-bridge";
     runtimeInputs = with pkgs; [ protonmail-bridge tmux ];
+		# TODO send notification when bridge is up/down
     text = ''
       case "$1" in
         start)
@@ -52,6 +53,15 @@ in
 
   ##### implementation
   config = mkIf cfg.enable {
-    home.packages = [ pm-bridge-script ];
+    home.packages = [ 
+			pm-bridge-script 
+			pkgs.neomutt
+			pkgs.mutt-wizard
+			pkgs.isync
+			pkgs.msmtp
+			pkgs.lynx
+			pkgs.notmuch
+			pkgs.abook
+		];
   };
 }
