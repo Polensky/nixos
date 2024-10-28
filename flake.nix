@@ -9,18 +9,20 @@
     {
       nixosConfigurations =  {
 				default = nixpkgs.lib.nixosSystem {
-						specialArgs = {inherit inputs;};
-						system = "x86_64-linux";
-						modules = [ 
-							./configuration.nix
-						];
-					};
+					specialArgs = {inherit inputs;};
+					system = "x86_64-linux";
+					modules = [ 
+						./devices/xps13/configuration.nix
+						./modules
+					];
 				};
-				iso_cath = nixpkgs.lib.nixosSystem {
-						specialArgs = {inherit inputs;};
-						modules = [ 
-							./iso/sl1_cath.nix
-						];
-				};
+				# pi = nixpkgs.lib.nixosSystem {
+				# 	specialArgs = {inherit inputs;};
+				# 	system = "aarch64-linux";
+				# 	modules = [ 
+				# 		./devices/pi/configuration.nix
+				# 	];
+				# };
+			};
     };
 }
