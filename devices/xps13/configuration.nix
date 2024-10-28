@@ -73,6 +73,7 @@
     ranger
     git
     home-manager
+		sops
 
     waybar
     mako

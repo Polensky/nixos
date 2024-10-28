@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+		inputs.sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs = { nixpkgs, ... }@inputs:
