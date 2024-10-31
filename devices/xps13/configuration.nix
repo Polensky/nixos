@@ -15,8 +15,6 @@
 	};
 	services.blueman.enable = true;
 
-	virtualisation.waydroid.enable = true;
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -25,6 +23,9 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+	nix.settings.extra-platforms = config.boot.binfmt.emulatedSystems;
+	boot.binfmt.emulatedSystems = ["aarch64-linux"];
+
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -58,7 +59,6 @@
     extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.zsh;
   };
-  #users.defaultUserShell = pkgs.zsh
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -75,6 +75,7 @@
     home-manager
 		sops
 
+		# Desktop
     waybar
     mako
     swww

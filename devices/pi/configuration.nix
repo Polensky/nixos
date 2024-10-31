@@ -2,20 +2,9 @@
 
 let
   user = "polen";
-  password = "guest";
-  SSID = "Cogeco-F710";
-  SSIDpassword = "mypassword";
-  interface = "wlan0";
+  password = "password";
   hostname = "pi";
 in {
-	# imports = [
-	# 	inputs.sops-nix.nixosModules.ops
-	# ];
-
-	# sops.defaultSopsFile = ../../secrets/secrets.yaml;
-	# sops.defaultSopsFormat = "yaml";
-	# sops.age.keyFile = "/home/polen/.config/sops/age/keys.txt";
-
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_rpi3;
     initrd.availableKernelModules = [ "xhci_pci" "usbhid" "usb_storage" ];
@@ -34,24 +23,30 @@ in {
   };
 
   networking = {
+		networkmanager.enable = true;
+		wireless.enable = false;
     hostName = hostname;
-    wireless = {
-      enable = true;
-      networks."${SSID}".psk = SSIDpassword;
-      interfaces = [ interface ];
-    };
   };
 
-  environment.systemPackages = with pkgs; [ nvim ];
+  environment.systemPackages = with pkgs; [ 
+		neovim 
+		tmux 
+		curl
+		wget
+		git
+		ranger
+	];
 
   services.openssh.enable = true;
+
+	virtualisation.docker.enable = true;
 
   users = {
     mutableUsers = false;
     users."${user}" = {
       isNormalUser = true;
       password = password;
-      extraGroups = [ "wheel" ];
+      extraGroups = [ "wheel" "docker" ];
     };
   };
 
