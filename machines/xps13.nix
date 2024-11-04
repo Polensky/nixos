@@ -22,11 +22,8 @@
     # # "Hello, world!" when run.
     # hello
     brave
-    firefox
     qutebrowser
     discord
-    signal-desktop
-    element-desktop
     emacs29-pgtk
     zathura
     vimiv-qt
@@ -36,11 +33,7 @@
 		# 3D stuff
     prusa-slicer
     openscad
-    freecad
-    blender
-		inkscape
 
-    foot
     alacritty
     ranger
     neovim
@@ -91,11 +84,13 @@
       "application/pdf" = ["org.pwmt.zathura-pdf-mupdf.desktop"];
       "text/html" = ["brave-browser.desktop"];
       "image/*" = ["vimiv.desktop"];
+			"x-scheme-handler/magnet" = ["userapp-transmission-gtk-C66AV2.desktop"];
     };
     defaultApplications = {
       "application/pdf" = ["org.pwmt.zathura-pdf-mupdf.desktop"];
       "text/html" = ["brave-browser.desktop"];
       "image/*" = ["vimiv.desktop"];
+			"x-scheme-handler/magnet" = ["userapp-transmission-gtk-C66AV2.desktop"];
     };
   };
 
