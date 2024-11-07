@@ -2,7 +2,6 @@
 
 let
   user = "polen";
-  password = "password";
   hostname = "pi";
 in {
   boot = {
@@ -22,11 +21,19 @@ in {
     };
   };
 
+	sops.defaultSopsFile = ../../secrets/secrets.yaml;
+	sops.defaultSopsFormat = "yaml";
+	sops.age.keyFile = "/home/polen/.config/sops/age/keys.txt";
+
+	sops.secrets.pi_user_pass.neededForUsers = true;
+
   networking = {
 		networkmanager.enable = true;
 		wireless.enable = false;
     hostName = hostname;
   };
+
+	nix.settings.trusted-users = [ "polen" ];
 
   environment.systemPackages = with pkgs; [ 
 		neovim 
@@ -45,7 +52,7 @@ in {
     mutableUsers = false;
     users."${user}" = {
       isNormalUser = true;
-      password = password;
+      hashedPasswordFile = config.sops.secrets.pi_user_pass.path;
       extraGroups = [ "wheel" "docker" ];
     };
   };

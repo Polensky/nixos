@@ -1,0 +1,9 @@
+keys:
+  - &xps13 age1x8qsd7kxxjvan4psvnvua3r0emljsnq07agxnu6jqw56ky8z6faqyjq0e3
+  - &pi age1y2s7ah49jmhd8n05q7tw0gjcnv3390s0uxp3ewjqueekq7a7rvdqzytgd2
+creation_rules:
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+      - age:
+        - *xps13
+        - *pi

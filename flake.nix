@@ -3,9 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+		sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = {nixpkgs, ...} @ inputs: {
+  outputs = {nixpkgs, sops-nix ,...} @ inputs: {
     nixosConfigurations = {
       default = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
@@ -21,6 +22,7 @@
         modules = [
           "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64-installer.nix"
           ./devices/pi/configuration.nix
+					sops-nix.nixosModules.sops
           {
             sdImage.compressImage = false;
 						nixpkgs.overlays = [
