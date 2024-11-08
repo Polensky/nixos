@@ -38,5 +38,6 @@
 				};
 			in {
 				homeConfigurations."polen@xps13" = mkHomeConfig ./machines/xps13.nix "x86_64-linux";
+				homeConfigurations."polen@pinephone" = mkHomeConfig ./machines/pinephone.nix "aarch64-linux";
 			};
 }
