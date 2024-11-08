@@ -37,7 +37,7 @@
 					extraSpecialArgs = { inherit system inputs; };
 				};
 			in {
-				homeConfigurations."polen@xps13" = mkHomeConfig ./machines/xps13.nix "x86_64-linux";
-				homeConfigurations."polen@pinephone" = mkHomeConfig ./machines/pinephone.nix "aarch64-linux";
+				homeConfigurations."polen@xps13" = mkHomeConfig ./devices/xps13.nix "x86_64-linux";
+				homeConfigurations."polen@pinephone" = mkHomeConfig ./devices/pinephone.nix "aarch64-linux";
 			};
 }
