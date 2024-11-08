@@ -23,6 +23,7 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+	nix.settings.trusted-users = [ "polen" ];
 	nix.settings.extra-platforms = config.boot.binfmt.emulatedSystems;
 	boot.binfmt.emulatedSystems = ["aarch64-linux"];
 

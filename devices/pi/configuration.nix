@@ -21,21 +21,29 @@ in {
     };
   };
 
-	sops.defaultSopsFile = ../../secrets/secrets.yaml;
-	sops.defaultSopsFormat = "yaml";
-	sops.age.keyFile = "/home/polen/.config/sops/age/keys.txt";
-
-	sops.secrets.pi_user_pass.neededForUsers = true;
+	#sops.defaultSopsFile = ../../secrets/secrets.yaml;
+	#sops.defaultSopsFormat = "yaml";
+	#sops.age.keyFile = "/home/polen/.config/sops/age/keys.txt";
+	#sops.secrets.pi_user_pass.neededForUsers = true;
 
   networking = {
 		networkmanager.enable = true;
 		wireless.enable = false;
     hostName = hostname;
+		firewall.allowedTCPPorts = [ 80 443 ];
   };
 
-	nix.settings.trusted-users = [ "polen" ];
+	services.caddy = {
+		enable = true;
+		virtualHosts."mealie.polensky.me".extraConfig = ''
+			reverse_proxy https://localhost:9925
+		'';
+	};
+
+	nix.settings.trusted-users = [ user ];
 
   environment.systemPackages = with pkgs; [ 
+		htop-vim
 		neovim 
 		tmux 
 		curl
@@ -52,7 +60,7 @@ in {
     mutableUsers = false;
     users."${user}" = {
       isNormalUser = true;
-      hashedPasswordFile = config.sops.secrets.pi_user_pass.path;
+      #hashedPasswordFile = config.sops.secrets.pi_user_pass.path;
       extraGroups = [ "wheel" "docker" ];
     };
   };
