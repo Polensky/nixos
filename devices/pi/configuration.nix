@@ -36,7 +36,7 @@ in {
 	services.caddy = {
 		enable = true;
 		virtualHosts."mealie.polensky.me".extraConfig = ''
-			reverse_proxy https://localhost:9925
+			reverse_proxy http://localhost:9925
 		'';
 	};
 
