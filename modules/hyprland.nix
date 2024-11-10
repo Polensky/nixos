@@ -1,7 +1,10 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; {
   options = {
     programs.hyprland = {
       enable = mkOption {
@@ -60,9 +63,9 @@ with lib;
           rounding = 8;
 
           blur = {
-              enabled = true;
-              size = 3;
-              passes = 1;
+            enabled = true;
+            size = 3;
+            passes = 1;
           };
 
           drop_shadow = "yes";
@@ -70,7 +73,6 @@ with lib;
           shadow_render_power = 3;
           col.shadow = "rgba(1a1a1aee)";
         };
-
 
         animations = {
           enabled = "yes";
@@ -90,19 +92,18 @@ with lib;
         };
 
         gestures = {
-            # See https://wiki.hyprland.org/Configuring/Variables/ for more
-            workspace_swipe = "off";
+          # See https://wiki.hyprland.org/Configuring/Variables/ for more
+          workspace_swipe = "off";
         };
 
         misc = {
-            # See https://wiki.hyprland.org/Configuring/Variables/ for more
-            force_default_wallpaper = 0; # Set to 0 to disable the anime mascot wallpapers
+          # See https://wiki.hyprland.org/Configuring/Variables/ for more
+          force_default_wallpaper = 0; # Set to 0 to disable the anime mascot wallpapers
         };
 
         xwayland = {
           force_zero_scaling = true;
         };
-
 
         "$mainMod" = "SUPER";
 

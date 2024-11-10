@@ -1,12 +1,15 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.programs.protonmail-bridge;
   pm-bridge-script = pkgs.writeShellApplication {
     name = "pm-bridge";
-    runtimeInputs = with pkgs; [ protonmail-bridge tmux ];
-		# TODO send notification when bridge is up/down
+    runtimeInputs = with pkgs; [protonmail-bridge tmux];
+    # TODO send notification when bridge is up/down
     text = ''
       case "$1" in
         start)
@@ -32,8 +35,7 @@ let
       esac
     '';
   };
-in
-{
+in {
   ##### interface
   options = {
     programs.protonmail-bridge = {
@@ -44,7 +46,7 @@ in
       };
 
       logLevel = mkOption {
-        type = types.enum [ "panic" "fatal" "error" "warn" "info" "debug" "debug-client" "debug-server" ];
+        type = types.enum ["panic" "fatal" "error" "warn" "info" "debug" "debug-client" "debug-server"];
         default = "info";
         description = "The log level";
       };
@@ -53,15 +55,15 @@ in
 
   ##### implementation
   config = mkIf cfg.enable {
-    home.packages = [ 
-			pm-bridge-script 
-			pkgs.neomutt
-			pkgs.mutt-wizard
-			pkgs.isync
-			pkgs.msmtp
-			pkgs.lynx
-			pkgs.notmuch
-			pkgs.abook
-		];
+    home.packages = [
+      pm-bridge-script
+      pkgs.neomutt
+      pkgs.mutt-wizard
+      pkgs.isync
+      pkgs.msmtp
+      pkgs.lynx
+      pkgs.notmuch
+      pkgs.abook
+    ];
   };
 }

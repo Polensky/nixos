@@ -1,6 +1,9 @@
-{ config, pkgs, inputs, ... }:
-
 {
+  config,
+  pkgs,
+  inputs,
+  ...
+}: {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "polen";
@@ -28,9 +31,9 @@
     zathura
     vimiv-qt
     pcmanfm
-		newsboat
+    newsboat
 
-		# 3D stuff
+    # 3D stuff
     prusa-slicer
     openscad
 
@@ -45,17 +48,17 @@
     unzip
 
     passExtensions.pass-otp
-    (pass-wayland.withExtensions (ext: with ext; [ pass-otp ]))
+    (pass-wayland.withExtensions (ext: with ext; [pass-otp]))
 
     pamixer
     playerctl
 
-		# dev
-		lazygit
+    # dev
+    lazygit
     gnumake
 
     font-awesome
-    (nerdfonts.override { fonts = [ "FiraCode" ]; })
+    (nerdfonts.override {fonts = ["FiraCode"];})
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -69,9 +72,9 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
-		(writeShellScriptBin "hms" ''
-			home-manager switch --flake ~/.config/home-manager#polen@xps13
-		'')
+    (writeShellScriptBin "hms" ''
+      home-manager switch --flake ~/.config/home-manager#polen@xps13
+    '')
   ];
 
   fonts.fontconfig.enable = true;
@@ -84,21 +87,20 @@
       "application/pdf" = ["org.pwmt.zathura-pdf-mupdf.desktop"];
       "text/html" = ["brave-browser.desktop"];
       "image/*" = ["vimiv.desktop"];
-			"x-scheme-handler/magnet" = ["userapp-transmission-gtk-C66AV2.desktop"];
+      "x-scheme-handler/magnet" = ["userapp-transmission-gtk-C66AV2.desktop"];
     };
     defaultApplications = {
       "application/pdf" = ["org.pwmt.zathura-pdf-mupdf.desktop"];
       "text/html" = ["brave-browser.desktop"];
       "image/*" = ["vimiv.desktop"];
-			"x-scheme-handler/magnet" = ["userapp-transmission-gtk-C66AV2.desktop"];
+      "x-scheme-handler/magnet" = ["userapp-transmission-gtk-C66AV2.desktop"];
     };
   };
 
-	programs.direnv = {
-		enable = true;
-		nix-direnv.enable = true;
-	};
-
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -130,7 +132,7 @@
   #
   #  /etc/profiles/per-user/polen/etc/profile.d/hm-session-vars.sh
   #
-  home.sessionVariables = { EDITOR = "nvim"; };
+  home.sessionVariables = {EDITOR = "nvim";};
 
   programs.zsh = {
     enable = true;
@@ -146,8 +148,11 @@
     settings = {
       add_newline = false;
       battery = {
-        display = [ 
-          { threshold = 15; style = "green"; }
+        display = [
+          {
+            threshold = 15;
+            style = "green";
+          }
         ];
       };
     };

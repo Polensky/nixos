@@ -16,28 +16,32 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }@inputs:
-			let
-				mkHomeConfig = machineModule: system: home-manager.lib.homeManagerConfiguration {
-					pkgs = import nixpkgs {
-						inherit system;
-						config = { allowUnfree = true; };
-						overlays = [
-							(final: prev: {
-								neovim = inputs.nixvim-flake.packages.${system}.default;
-							})
-						];
-					};
+  outputs = {
+    nixpkgs,
+    home-manager,
+    ...
+  } @ inputs: let
+    mkHomeConfig = machineModule: system:
+      home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          inherit system;
+          config = {allowUnfree = true;};
+          overlays = [
+            (final: prev: {
+              neovim = inputs.nixvim-flake.packages.${system}.default;
+            })
+          ];
+        };
 
-					modules = [ 
-						./modules
-						machineModule
-					];
+        modules = [
+          ./modules
+          machineModule
+        ];
 
-					extraSpecialArgs = { inherit system inputs; };
-				};
-			in {
-				homeConfigurations."polen@xps13" = mkHomeConfig ./devices/xps13.nix "x86_64-linux";
-				homeConfigurations."polen@pinephone" = mkHomeConfig ./devices/pinephone.nix "aarch64-linux";
-			};
+        extraSpecialArgs = {inherit system inputs;};
+      };
+  in {
+    homeConfigurations."polen@xps13" = mkHomeConfig ./devices/xps13.nix "x86_64-linux";
+    homeConfigurations."polen@pinephone" = mkHomeConfig ./devices/pinephone.nix "aarch64-linux";
+  };
 }
