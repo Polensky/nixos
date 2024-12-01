@@ -16,6 +16,14 @@
           ./modules
         ];
       };
+      latoure = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;};
+        system = "x86_64-linux";
+        modules = [
+          ./devices/latoure/configuration.nix
+          ./modules
+        ];
+      };
       pi = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
         system = "aarch64-linux";
