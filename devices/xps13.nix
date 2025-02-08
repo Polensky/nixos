@@ -35,6 +35,7 @@
 
     # 3D stuff
     prusa-slicer
+		orca-slicer
     openscad
 
     alacritty
@@ -57,8 +58,7 @@
     lazygit
     gnumake
 
-    font-awesome
-    (nerdfonts.override {fonts = ["FiraCode"];})
+		nerd-fonts.fira-code
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
