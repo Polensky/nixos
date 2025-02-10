@@ -58,7 +58,8 @@
     lazygit
     gnumake
 
-		nerd-fonts.fira-code
+		font-awesome
+		pkgs.nerd-fonts.fira-code
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -80,6 +81,36 @@
   fonts.fontconfig.enable = true;
 
   programs.protonmail-bridge.enable = true;
+	programs.my-ghostty.enable = true;
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    shellAliases = {
+      v = "nvim";
+      nrs = "sudo nixos-rebuild switch --flake ~/.config/nixos#default";
+    };
+  };
+
+  programs.starship = {
+    enable = true;
+    settings = {
+      add_newline = false;
+      battery = {
+        display = [
+          {
+            threshold = 15;
+            style = "green";
+          }
+        ];
+      };
+    };
+  };
 
   xdg.mimeApps = {
     enable = true;
@@ -95,11 +126,6 @@
       "image/*" = ["vimiv.desktop"];
       "x-scheme-handler/magnet" = ["userapp-transmission-gtk-C66AV2.desktop"];
     };
-  };
-
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
   };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -133,30 +159,6 @@
   #  /etc/profiles/per-user/polen/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {EDITOR = "nvim";};
-
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    shellAliases = {
-      v = "nvim";
-      nrs = "sudo nixos-rebuild switch --flake ~/.config/nixos#default";
-    };
-  };
-
-  programs.starship = {
-    enable = true;
-    settings = {
-      add_newline = false;
-      battery = {
-        display = [
-          {
-            threshold = 15;
-            style = "green";
-          }
-        ];
-      };
-    };
-  };
 
   services.gammastep = {
     enable = true;
