@@ -60,8 +60,10 @@
       };
       "mbp-m4" = nix-darwin.lib.darwinSystem {
         modules = [./devices/macbook/configuration.nix];
-        specialArgs = {inherit inputs;};
-				system = "aarch64-darwin";
+        specialArgs = {
+					inherit inputs;
+					system = "aarch64-darwin";
+				};
       };
     };
   };
