@@ -19,13 +19,15 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+	boot.kernelModules = [ "msr" ];
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 	nix.settings.trusted-users = [ "polen" ];
-	nix.settings.extra-platforms = config.boot.binfmt.emulatedSystems;
-	boot.binfmt.emulatedSystems = ["aarch64-linux"];
+	# nix.settings.extra-platforms = config.boot.binfmt.emulatedSystems;
+	# boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
 
   # Configure network proxy if necessary
@@ -88,6 +90,9 @@
     wl-clipboard
     libsForQt5.qt5.qtquickcontrols2
     libsForQt5.qt5.qtgraphicaleffects
+
+		# Nix related
+		nixfmt-classic
   ];
 
   programs.zsh.enable = true;
