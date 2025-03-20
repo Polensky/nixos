@@ -3,10 +3,12 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nix-darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 		sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = {nixpkgs, sops-nix ,...} @ inputs: {
+  outputs = {nixpkgs, nix-darwin, sops-nix ,...} @ inputs: {
     nixosConfigurations = {
       default = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
@@ -42,6 +44,10 @@
           }
         ];
       };
+			darwinConfigurations."Charless-MacBook-Pro" = nix-darwin.lib.darwinSystem {
+				modules = [ ./devices/macbook/configuration.nix ];
+				specialArgs = { inherit inputs; };
+			};
     };
   };
 }
