@@ -5,6 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+		nixvim.url = "github:Polensky/nixvim";
 		sops-nix.url = "github:Mic92/sops-nix";
   };
 
