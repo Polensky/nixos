@@ -53,8 +53,15 @@
     darwinConfigurations = {
       "Charless-MacBook-Pro" = nix-darwin.lib.darwinSystem {
         modules = [./devices/macbook/configuration.nix];
+        specialArgs = {
+					inherit inputs;
+					system = "x86_64-darwin";
+				};
+      };
+      "mbp-m4" = nix-darwin.lib.darwinSystem {
+        modules = [./devices/macbook/configuration.nix];
         specialArgs = {inherit inputs;};
-				system = "x86_64-darwin";
+				system = "aarch64-darwin";
       };
     };
   };

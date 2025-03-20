@@ -1,4 +1,4 @@
-{pkgs, inputs, ...}: {
+{pkgs, inputs, system, ...}: {
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
@@ -80,5 +80,5 @@
   system.stateVersion = 4;
 
   # The platform the configuration will be used on.
-  nixpkgs.hostPlatform = "x86_64-darwin";
+  nixpkgs.hostPlatform = system;
 }
