@@ -4,7 +4,7 @@
   environment.systemPackages = with pkgs; [
 		# terminal
     ranger
-		(inputs.nixvim.packages.x86_64-darwin.default)
+		(inputs.nixvim.packages.${system}.default)
 
 		# nix
     home-manager
@@ -49,6 +49,19 @@
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
+	ids.gids.nixbld = 350;
+	
+	system.defaults.dock = {
+	  autohide = true;
+	  persistent-apps = [];
+		show-recents = false;
+		static-only = true;
+		tilesize = 32;
+	};
+
+	system.defaults.menuExtraClock = {
+	  Show24Hour = true;
+	};
 
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = system;
