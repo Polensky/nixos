@@ -21,6 +21,7 @@ in {
     # work tool
     doppler
     docker
+    colima
     git
     gnupg
     (pass.withExtensions (exts: [exts.pass-otp]))
@@ -54,6 +55,7 @@ in {
 
       # work
       "slack"
+      "tunnelblick"
 
       # doom emacs
       "font-symbols-only-nerd-font"
