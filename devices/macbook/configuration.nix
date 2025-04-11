@@ -7,7 +7,7 @@ in{
   environment.systemPackages = with pkgs; [
 		# terminal
     ranger
-		(inputs.nixvim.packages.${system}.default)
+		(inputs.vimix.packages.${system}.default)
 
 		# nix
     home-manager
