@@ -56,6 +56,7 @@ in {
       # work
       "slack"
       "tunnelblick"
+      "dbeaver-community"
 
       # doom emacs
       "font-symbols-only-nerd-font"
