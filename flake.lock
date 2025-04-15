@@ -724,11 +724,11 @@
         "nvf": "nvf"
       },
       "locked": {
-        "lastModified": 1744641981,
-        "narHash": "sha256-kez41korUoJ4TKqmp5e4y9uGzyzujPpDhGx7bS1ARnI=",
+        "lastModified": 1744737914,
+        "narHash": "sha256-JL4mYFY4w3xopvl2McBRdmEJwZBlLLkJSuTJXNEHkeY=",
         "owner": "Polensky",
         "repo": "vimix",
-        "rev": "395d710a17980a323e6fe2efe261ee9d9afce535",
+        "rev": "a5b9ae2f4db89220d486759637dff88e478c0f27",
         "type": "github"
       },
       "original": {
