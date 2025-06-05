@@ -52,19 +52,27 @@ in {
       # internet
       "spotify"
       "brave-browser"
+      "qutebrowser"
+      "stremio"
 
       # work
       "slack"
       "tunnelblick"
       "dbeaver-community"
+      "claude"
 
       # doom emacs
       "font-symbols-only-nerd-font"
     ];
   };
 
-  # Necessary for using flakes on this system.
-  nix.settings.experimental-features = "nix-command flakes";
+  nix = {
+    # Necessary for using flakes on this system.
+    settings.experimental-features = "nix-command flakes";
+    extraOptions = ''
+      extra-platforms = x86_64-darwin aarm64-darwin
+    '';
+  };
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true; # default shell on catalina
