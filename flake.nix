@@ -5,6 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nixvim.url = "github:Polensky/nixvim";
+    vimix.url = "github:Polensky/vimix";
     sops-nix.url = "github:Mic92/sops-nix";
   };
 
@@ -60,8 +61,10 @@
       };
       "mbp-m4" = nix-darwin.lib.darwinSystem {
         modules = [./devices/macbook/configuration.nix];
-        specialArgs = {inherit inputs;};
-				system = "aarch64-darwin";
+        specialArgs = {
+					inherit inputs;
+					system = "aarch64-darwin";
+				};
       };
     };
   };
