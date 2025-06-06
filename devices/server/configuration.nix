@@ -4,15 +4,13 @@
   ...
 }: {
   imports = [
-    # Include the results of the hardware scan.
-    ./disk-config.nix
   ];
 
   boot.loader = {
     grub = {
       enable = true;
       version = 2;
-      device = "/dev/sda";
+      devices = ["/dev/sda"];
     };
   };
 
