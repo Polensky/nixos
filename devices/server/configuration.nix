@@ -5,21 +5,20 @@
 }: {
   imports = [
     # Include the results of the hardware scan.
-    ./hardware-configuration.nix
     ./disk-config.nix
   ];
 
   boot.loader = {
-    systemd-boot = {
+    grub = {
       enable = true;
-      configurationLimit = 10;
+      version = 2;
+      device = "/dev/sda";
     };
-    efi.canTouchEfiVariables = true;
   };
 
   services.openssh.enable = true;
 
-  boot.kernelModules = ["msr"];
+  #boot.kernelModules = ["msr"];
 
   networking.hostName = "server";
 

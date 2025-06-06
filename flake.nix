@@ -40,6 +40,7 @@
         modules = [
           disko.nixosModules.disko
           ./devices/server/configuration.nix
+          ./devices/server/hardware-configuration.nix
           ./modules
         ];
       };
