@@ -6,8 +6,6 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     vimix.url = "github:Polensky/vimix";
     sops-nix.url = "github:Mic92/sops-nix";
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
@@ -40,7 +38,6 @@
         modules = [
           disko.nixosModules.disko
           ./devices/server/configuration.nix
-          ./devices/server/hardware-configuration.nix
           ./modules
         ];
       };
