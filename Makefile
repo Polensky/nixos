@@ -4,3 +4,6 @@ build-pi-image:
 # Doest work yet
 rebuild-pi:
 	nixos-rebuild switch --flake .#pi --target-host polen@192.168.1.241 --use-remote-sudo
+
+deploy-server:
+	nixos-rebuild switch --flake .#server --target-host server --build-host server --use-remote-sudo

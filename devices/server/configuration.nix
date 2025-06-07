@@ -13,27 +13,47 @@
       devices = ["/dev/sda"];
     };
   };
+  #boot.kernelModules = ["msr"];
 
   services.openssh.enable = true;
 
-  #boot.kernelModules = ["msr"];
+  services = {
+    jellyfin = {
+      enable = true;
+      user = "polen";
+    };
+    transmission = {
+      enable = true;
+      settings = {
+        rpc-bind-address = "0.0.0.0";
+        rpc-whitelist = "127.0.0.1,192.168.*.*";
+      };
+    };
+  };
 
-  networking.hostName = "server";
+  networking = {
+    hostName = "server";
+    firewall.allowedTCPPorts = [
+      8096 # jellyfin
+      9091 # transmission
+    ];
+  };
 
   time.timeZone = "America/Toronto";
 
   users.users.polen = {
     isNormalUser = true;
     description = "polen";
-    extraGroups = ["wheel"];
+    extraGroups = ["wheel" "transmission" "jellyfin"];
     shell = pkgs.zsh;
-    polen.openssh.authorizedKeys.keys = [
+    openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC6O2MJqR+P/FwRyVSz1HWYhMtIwh16ozBU71Y2vf0oNDQ6DZ5T8Bvp5/4uSJgS8lOl3qYyNy0e0zJMIyfFVJnu89ycKBEdixA4HqWOUQGiyvn1C4s740jHolOzN1xNB24PDXFz0vHcVb+G5nU/xeKeaq0vrszrkK2zctqXshw94/x3ah0m3fr5CwM4S2RY/VODOdt11fllFEvN8HGE2mQTPn5sJzwtGW20npQ5iJ7ShugPbC4D1G2JU1R7MqkvWEpq9OFVb1prTpJM+i/lcqCn3lBv8XxpKKnD3q+48eeO1geosAsG/kgUWPDildbzcSfytgj7/TCTujx2ow4ZUfS4kWUrNaXM3M99SG61rFN7zLMAv14SOSsgegmX3q0ZAwOieUhCifqIqdfFr5QjEUP11ALofYRC6567X1YrEVXZFFnZSXMKGkBKpTxx0jaTTGnFSd6F49kDlI30cKJnVUgAK5nESissdEFn3UGRSFfxmjZkYvhY5l3LqtbO3kEutJU= polen@polen-xps"
     ];
   };
   environment.systemPackages = with pkgs; [
     neovim
     htop-vim
+    wget
   ];
 
   programs.zsh.enable = true;
