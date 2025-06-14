@@ -15,6 +15,8 @@
   };
   #boot.kernelModules = ["msr"];
 
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+
   services.openssh.enable = true;
 
   services = {
@@ -29,6 +31,31 @@
         rpc-whitelist = "127.0.0.1,192.168.*.*";
       };
     };
+    prometheus = {
+      enable = true;
+      exporters = {
+        node.enable = true;
+      };
+      scrapeConfigs = [
+        {
+          job_name = "node-exporters-lan";
+          static_configs = [
+            {
+              targets = ["192.168.1.241:9100"];
+              labels = {
+                instance = "pi";
+              };
+            }
+            {
+              targets = ["127.0.0.1:9100"];
+              labels = {
+                instance = "server";
+              };
+            }
+          ];
+        }
+      ];
+    };
   };
 
   networking = {
@@ -36,6 +63,7 @@
     firewall.allowedTCPPorts = [
       8096 # jellyfin
       9091 # transmission
+      9090 # prometheus
     ];
   };
 

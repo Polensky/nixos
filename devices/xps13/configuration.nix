@@ -29,14 +29,14 @@
   nix = {
     settings.experimental-features = ["nix-command" "flakes"];
     settings.trusted-users = ["polen"];
-    # settings.extra-platforms = config.boot.binfmt.emulatedSystems;
+    settings.extra-platforms = config.boot.binfmt.emulatedSystems;
     gc = {
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 15d";
     };
   };
-  # boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
