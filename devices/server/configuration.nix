@@ -2,7 +2,9 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  user = "polen";
+in {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -21,8 +23,8 @@
 
   services = {
     jellyfin = {
+      inherit user;
       enable = true;
-      user = "polen";
     };
     transmission = {
       enable = true;
@@ -56,6 +58,10 @@
         }
       ];
     };
+    taskchampion-sync-server = {
+      inherit user;
+      enable = true;
+    };
   };
 
   networking = {
@@ -64,14 +70,15 @@
       8096 # jellyfin
       9091 # transmission
       9090 # prometheus
+      10222 # taskchampion-sync-server
     ];
   };
 
   time.timeZone = "America/Toronto";
 
-  users.users.polen = {
+  users.users.user = {
     isNormalUser = true;
-    description = "polen";
+    description = user;
     extraGroups = ["wheel" "transmission" "jellyfin"];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [
