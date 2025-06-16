@@ -47,7 +47,7 @@ in {
   services.caddy = {
     enable = true;
     virtualHosts."mealie.polensky.me".extraConfig = ''
-      reverse_proxy http://localhost:9925
+      reverse_proxy http://192.168.1.242:9000
     '';
   };
 
@@ -61,16 +61,12 @@ in {
   environment.systemPackages = with pkgs; [
     htop-vim
     neovim
-    tmux
     curl
     wget
-    git
     ranger
   ];
 
   services.openssh.enable = true;
-
-  virtualisation.docker.enable = true;
 
   users = {
     mutableUsers = false;

@@ -62,6 +62,18 @@ in {
       inherit user;
       enable = true;
     };
+    mealie = {
+      enable = true;
+      settings = {
+        ALLOW_SIGNUP = "false";
+        PUID = 1000;
+        PGID = 1000;
+        TZ = "Canada/Eastern";
+        MAX_WORKERS = 1;
+        WEB_CONCURRENCY = 1;
+        #BASE_URL = "https://mealie.polensky.me";
+      };
+    };
   };
 
   networking = {
@@ -70,15 +82,14 @@ in {
       8096 # jellyfin
       9091 # transmission
       9090 # prometheus
+      9000 # mealie
       10222 # taskchampion-sync-server
     ];
   };
 
   time.timeZone = "America/Toronto";
 
-  users.users.user = {
-    isNormalUser = true;
-    description = user;
+  users.users."${user}" = {
     extraGroups = ["wheel" "transmission" "jellyfin"];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [
