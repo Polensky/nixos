@@ -21,16 +21,15 @@ in {
 
   services.openssh.enable = true;
 
+  # observability
   services = {
-    jellyfin = {
-      inherit user;
-      enable = true;
-    };
-    transmission = {
+    grafana = {
       enable = true;
       settings = {
-        rpc-bind-address = "0.0.0.0";
-        rpc-whitelist = "127.0.0.1,192.168.*.*";
+        server = {
+          http_addr = "0.0.0.0";
+          http_port = 3000;
+        };
       };
     };
     prometheus = {
@@ -58,9 +57,25 @@ in {
         }
       ];
     };
+  };
+
+  # media
+  services = {
+    jellyfin = {
+      inherit user;
+      enable = true;
+    };
+    transmission = {
+      enable = true;
+      settings = {
+        rpc-bind-address = "0.0.0.0";
+        rpc-whitelist = "127.0.0.1,192.168.*.*";
+      };
+    };
     taskchampion-sync-server = {
       inherit user;
       enable = true;
+      host = "0.0.0.0";
     };
     mealie = {
       enable = true;
@@ -79,9 +94,10 @@ in {
   networking = {
     hostName = "server";
     firewall.allowedTCPPorts = [
+      9090 # prometheus
+      3000 # grafana
       8096 # jellyfin
       9091 # transmission
-      9090 # prometheus
       9000 # mealie
       10222 # taskchampion-sync-server
     ];
