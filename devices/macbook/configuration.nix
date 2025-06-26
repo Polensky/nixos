@@ -32,9 +32,11 @@ in {
     ripgrep
 
     (writeShellScriptBin "drs" ''
-      darwin-rebuild switch --flake ~/.config/nixos
+      sudo darwin-rebuild switch --flake ~/.config/nixos
     '')
   ];
+
+  system.primaryUser = "charles";
 
   homebrew = {
     enable = true;
@@ -72,6 +74,15 @@ in {
     extraOptions = ''
       extra-platforms = x86_64-darwin aarm64-darwin
     '';
+    gc = {
+      automatic = true;
+      interval = {
+        Weekday = 0;
+        Hour = 0;
+        Minute = 0;
+      };
+      options = "--delete-older-than 15d";
+    };
   };
 
   # Create /etc/zshrc that loads the nix-darwin environment.
