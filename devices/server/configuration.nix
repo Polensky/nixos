@@ -17,8 +17,49 @@ in {
   };
   #boot.kernelModules = ["msr"];
 
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+
   services.openssh.enable = true;
 
+  # observability
+  services = {
+    grafana = {
+      enable = true;
+      settings = {
+        server = {
+          http_addr = "0.0.0.0";
+          http_port = 3000;
+        };
+      };
+    };
+    prometheus = {
+      enable = true;
+      exporters = {
+        node.enable = true;
+      };
+      scrapeConfigs = [
+        {
+          job_name = "node-exporters-lan";
+          static_configs = [
+            {
+              targets = ["192.168.1.241:9100"];
+              labels = {
+                instance = "pi";
+              };
+            }
+            {
+              targets = ["127.0.0.1:9100"];
+              labels = {
+                instance = "server";
+              };
+            }
+          ];
+        }
+      ];
+    };
+  };
+
+  # media
   services = {
     jellyfin = {
       inherit user;
@@ -34,23 +75,37 @@ in {
     taskchampion-sync-server = {
       inherit user;
       enable = true;
+      host = "0.0.0.0";
+    };
+    mealie = {
+      enable = true;
+      settings = {
+        ALLOW_SIGNUP = "false";
+        PUID = 1000;
+        PGID = 1000;
+        TZ = "Canada/Eastern";
+        MAX_WORKERS = 1;
+        WEB_CONCURRENCY = 1;
+        #BASE_URL = "https://mealie.polensky.me";
+      };
     };
   };
 
   networking = {
     hostName = "server";
     firewall.allowedTCPPorts = [
+      9090 # prometheus
+      3000 # grafana
       8096 # jellyfin
       9091 # transmission
+      9000 # mealie
       10222 # taskchampion-sync-server
     ];
   };
 
   time.timeZone = "America/Toronto";
 
-  users.users.user = {
-    isNormalUser = true;
-    description = user;
+  users.users."${user}" = {
     extraGroups = ["wheel" "transmission" "jellyfin"];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [
