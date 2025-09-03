@@ -21,6 +21,13 @@ in {
 
   services.openssh.enable = true;
 
+  services.caddy = {
+    enable = true;
+    virtualHosts."mealie.polensky.me".extraConfig = ''
+      reverse_proxy http://127.0.0.1:9000
+    '';
+  };
+
   # observability
   services = {
     grafana = {
@@ -41,12 +48,12 @@ in {
         {
           job_name = "node-exporters-lan";
           static_configs = [
-            {
-              targets = ["192.168.1.241:9100"];
-              labels = {
-                instance = "pi";
-              };
-            }
+            #{
+            #  targets = ["192.168.1.241:9100"];
+            #  labels = {
+            #    instance = "pi";
+            #  };
+            #}
             {
               targets = ["127.0.0.1:9100"];
               labels = {
@@ -94,6 +101,8 @@ in {
   networking = {
     hostName = "server";
     firewall.allowedTCPPorts = [
+      80
+      443
       9090 # prometheus
       3000 # grafana
       8096 # jellyfin

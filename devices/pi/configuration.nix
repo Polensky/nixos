@@ -44,11 +44,9 @@ in {
     firewall.allowedTCPPorts = [80 443];
   };
 
-  services.caddy = {
+  services.pihole-ftl = {
     enable = true;
-    virtualHosts."mealie.polensky.me".extraConfig = ''
-      reverse_proxy http://192.168.1.242:9000
-    '';
+    openFirewallDHCP = true;
   };
 
   services.prometheus.exporters = {
@@ -73,7 +71,7 @@ in {
     users."${user}" = {
       isNormalUser = true;
       #hashedPasswordFile = config.sops.secrets.pi_user_pass.path;
-      extraGroups = ["wheel" "docker"];
+      extraGroups = ["wheel" "pihole"];
     };
   };
 
