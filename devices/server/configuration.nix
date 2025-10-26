@@ -125,6 +125,8 @@ in {
     neovim
     htop-vim
     wget
+    xmrig
+    tmux
   ];
 
   programs.zsh.enable = true;
