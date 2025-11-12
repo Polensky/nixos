@@ -68,6 +68,14 @@ in {
 
   # media
   services = {
+    sonarr = {
+      inherit user;
+      enable = true;
+    };
+    prowlarr = {
+      enable = true;
+      openFirewall = true;
+    };
     jellyfin = {
       inherit user;
       enable = true;
@@ -108,6 +116,7 @@ in {
       8096 # jellyfin
       9091 # transmission
       9000 # mealie
+      8989 # sonarr
       10222 # taskchampion-sync-server
     ];
   };
