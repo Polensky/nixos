@@ -124,13 +124,13 @@ in {
   fileSystems."/mnt/latoure-data" = {
     device = "latoure.local:/data";
     fsType = "nfs";
-    options = [ "x-systemd.automount" "noauto" "x-systemd.idle-timeout=600" ];
+    options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=600"];
   };
 
   fileSystems."/mnt/latoure-data1" = {
     device = "latoure.local:/data1";
     fsType = "nfs";
-    options = [ "x-systemd.automount" "noauto" "x-systemd.idle-timeout=600" ];
+    options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=600"];
   };
 
   networking = {
@@ -167,6 +167,7 @@ in {
     xmrig
     tmux
     nfs-utils
+    ranger
   ];
 
   programs.zsh.enable = true;
