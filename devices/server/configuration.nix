@@ -106,6 +106,33 @@ in {
     };
   };
 
+  # Enable mDNS for .local hostname resolution
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      domain = true;
+      hinfo = true;
+      userServices = true;
+      workstation = true;
+    };
+  };
+
+  # NFS Client - Mount storage from latoure
+  fileSystems."/mnt/latoure-data" = {
+    device = "latoure.local:/data";
+    fsType = "nfs";
+    options = [ "x-systemd.automount" "noauto" "x-systemd.idle-timeout=600" ];
+  };
+
+  fileSystems."/mnt/latoure-data1" = {
+    device = "latoure.local:/data1";
+    fsType = "nfs";
+    options = [ "x-systemd.automount" "noauto" "x-systemd.idle-timeout=600" ];
+  };
+
   networking = {
     hostName = "server";
     firewall.allowedTCPPorts = [
@@ -118,6 +145,9 @@ in {
       9000 # mealie
       8989 # sonarr
       10222 # taskchampion-sync-server
+    ];
+    firewall.allowedUDPPorts = [
+      5353 # mDNS
     ];
   };
 
@@ -136,6 +166,7 @@ in {
     wget
     xmrig
     tmux
+    nfs-utils
   ];
 
   programs.zsh.enable = true;

@@ -1,14 +1,15 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
+# and in the NixOS manual (accessible by running 'nixos-help').
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   boot.loader = {
     systemd-boot = {
@@ -18,14 +19,14 @@
     efi.canTouchEfiVariables = true;
   };
 
-	#hardware.opengl = {
-	#	enable = true; 
-	#	driSupport32Bit = true;
-	#};
+  #hardware.opengl = {
+  #	enable = true;
+  #	driSupport32Bit = true;
+  #};
 
-	#services.xserver.videoDrivers = ["nvidia"];
-	#hardware.nvidia.modesetting.enable = true;
-	#hardware.nvidia.open = true;
+  #services.xserver.videoDrivers = ["nvidia"];
+  #hardware.nvidia.modesetting.enable = true;
+  #hardware.nvidia.open = true;
 
   networking.hostName = "latoure"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -34,13 +35,27 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-	#nix.settings.trusted-users = [ "polen" "polensky" ];
-	#nix.settings.extra-platforms = config.boot.binfmt.emulatedSystems;
-	#boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+  #nix.settings.trusted-users = [ "polen" "polensky" ];
+  #nix.settings.extra-platforms = config.boot.binfmt.emulatedSystems;
+  #boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   # Enable networking
   networking.networkmanager.enable = true;
+
+  # Enable mDNS for .local hostname resolution
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      domain = true;
+      hinfo = true;
+      userServices = true;
+      workstation = true;
+    };
+  };
 
   # Set your time zone.
   time.timeZone = "America/Toronto";
@@ -54,7 +69,7 @@
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
-	services.displayManager.defaultSession = "plasmax11";
+  services.displayManager.defaultSession = "plasmax11";
   services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
@@ -85,19 +100,19 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.polensky = {
     isNormalUser = true;
     description = "polensky";
-    extraGroups = [ "networkmanager" "wheel" ];
-		shell = pkgs.zsh;
+    extraGroups = ["networkmanager" "wheel"];
+    shell = pkgs.zsh;
     packages = with pkgs; [
       kdePackages.kate
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
-	programs.zsh.enable = true;
+  programs.zsh.enable = true;
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -105,10 +120,10 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-	programs.steam = {
-		enable = true;
-		gamescopeSession.enable = true;
-	};
+  programs.steam = {
+    enable = true;
+    gamescopeSession.enable = true;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -119,14 +134,14 @@
     wget
     git
     home-manager
-		alejandra
+    alejandra
 
-		protonup
+    protonup
   ];
 
-	environment.sessionVariables = {
-		STEAM_EXTRA_COMPAT_TOOLS_PATH = "/home/polensky/.steam/root/compatibilitytools.d";
-	};
+  environment.sessionVariables = {
+    STEAM_EXTRA_COMPAT_TOOLS_PATH = "/home/polensky/.steam/root/compatibilitytools.d";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -138,26 +153,43 @@
 
   # List services that you want to enable:
 
-	services.jellyfin = {
-		enable = true;
-		user = "polensky";
-	};
+  services.jellyfin = {
+    enable = true;
+    user = "polensky";
+  };
+
+  # NFS Server - Export storage to other machines
+  services.nfs.server = {
+    enable = true;
+    exports = ''
+      /data    192.168.1.0/24(rw,sync,no_subtree_check,fsid=0)
+      /data1   192.168.1.0/24(rw,sync,no_subtree_check,fsid=1)
+    '';
+  };
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [
+    2049 # NFS
+    111 # RPC
+    20048 # NFS mountd
+  ];
+  networking.firewall.allowedUDPPorts = [
+    2049 # NFS
+    111 # RPC
+    20048 # NFS mountd
+    5353 # mDNS
+  ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # on your system were taken. It's perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
-
 }
