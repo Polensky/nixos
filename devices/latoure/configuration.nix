@@ -101,8 +101,8 @@
   services.nfs.server = {
     enable = true;
     exports = ''
-      /data    192.168.1.0/24(rw,sync,no_subtree_check,fsid=0)
-      /data1   192.168.1.0/24(rw,sync,no_subtree_check,fsid=1)
+      /data    192.168.1.0/24(rw,sync,no_subtree_check,fsid=0,all_squash,anonuid=1000,anongid=100)
+      /data1   192.168.1.0/24(rw,sync,no_subtree_check,fsid=1,all_squash,anonuid=1000,anongid=100)
     '';
   };
 
