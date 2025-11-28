@@ -48,12 +48,6 @@ in {
         {
           job_name = "node-exporters-lan";
           static_configs = [
-            #{
-            #  targets = ["192.168.1.241:9100"];
-            #  labels = {
-            #    instance = "pi";
-            #  };
-            #}
             {
               targets = ["127.0.0.1:9100"];
               labels = {
@@ -66,16 +60,14 @@ in {
     };
   };
 
+  systemd.services.jellyfin = {
+    environment = {
+      DOTNET_SYSTEM_IO_DISABLEFILELOCKING = "1";
+    };
+  };
+
   # media
   services = {
-    sonarr = {
-      inherit user;
-      enable = true;
-    };
-    prowlarr = {
-      enable = true;
-      openFirewall = true;
-    };
     jellyfin = {
       inherit user;
       enable = true;

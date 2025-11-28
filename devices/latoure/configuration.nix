@@ -57,6 +57,16 @@
     };
   };
 
+  services = {
+    sonarr = {
+      enable = true;
+    };
+    prowlarr = {
+      enable = true;
+      openFirewall = true;
+    };
+  };
+
   # Set your time zone.
   time.timeZone = "America/Toronto";
 
