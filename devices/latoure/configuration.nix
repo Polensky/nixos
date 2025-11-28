@@ -60,6 +60,7 @@
   services = {
     sonarr = {
       enable = true;
+      openFirewall = true;
     };
     prowlarr = {
       enable = true;
