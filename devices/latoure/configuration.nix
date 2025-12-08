@@ -71,6 +71,7 @@
 		  user = "sonarr";
       enable = true;
       openFirewall = true;
+			home = "/data1/transmission";
       settings = {
         rpc-bind-address = "0.0.0.0";
         rpc-whitelist = "127.0.0.1,192.168.*.*";
@@ -136,6 +137,7 @@
 			2049 # NFS
 			111 # RPC
 			20048 # NFS mountd
+			9091 # transmission
 		];
 		allowedUDPPorts = [
 			2049 # NFS
