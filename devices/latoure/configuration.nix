@@ -61,17 +61,23 @@
     sonarr = {
       enable = true;
       openFirewall = true;
-			dataDir = "/data1/sonarr/.config/NzbDrone";
+      dataDir = "/data1/sonarr/.config/NzbDrone";
+    };
+    radarr = {
+      user = "sonarr";
+      enable = true;
+      openFirewall = true;
+      dataDir = "/data1/radarr/.config/Radarr";
     };
     prowlarr = {
       enable = true;
       openFirewall = true;
     };
     transmission = {
-		  user = "sonarr";
+      user = "sonarr";
       enable = true;
       openFirewall = true;
-			home = "/data1/transmission";
+      home = "/data1/transmission";
       settings = {
         rpc-bind-address = "0.0.0.0";
         rpc-whitelist = "127.0.0.1,192.168.*.*";
@@ -133,19 +139,19 @@
 
   # Open ports in the firewall.
   networking.firewall = {
-		allowedTCPPorts = [
-			2049 # NFS
-			111 # RPC
-			20048 # NFS mountd
-			9091 # transmission
-		];
-		allowedUDPPorts = [
-			2049 # NFS
-			111 # RPC
-			20048 # NFS mountd
-			5353 # mDNS
-		];
-	};
+    allowedTCPPorts = [
+      2049 # NFS
+      111 # RPC
+      20048 # NFS mountd
+      9091 # transmission
+    ];
+    allowedUDPPorts = [
+      2049 # NFS
+      111 # RPC
+      20048 # NFS mountd
+      5353 # mDNS
+    ];
+  };
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
