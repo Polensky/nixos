@@ -1,5 +1,5 @@
-{ pkgs, lib, ... }: {
-
-	imports = [
-	];
+{...}: {
+  imports = [
+    ./pocketbase.nix
+  ];
 }

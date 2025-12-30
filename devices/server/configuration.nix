@@ -21,10 +21,33 @@ in {
 
   services.openssh.enable = true;
 
+  services.pocketbase = {
+    enable = true;
+    openFirewall = true;
+    user = "polen";
+  };
+
   services.caddy = {
     enable = true;
     virtualHosts."mealie.polensky.me".extraConfig = ''
       reverse_proxy http://127.0.0.1:9000
+    '';
+
+    virtualHosts."pb.polensky.me".extraConfig = ''
+      request_body {
+        max_size 10MB
+      }
+      reverse_proxy 127.0.0.1:8090 {
+        transport http {
+          read_timeout 360s
+        }
+      }
+    '';
+
+    virtualHosts."demo.polensky.me".extraConfig = ''
+      root * /srv/demo
+      file_server
+      try_files {path} /index.html
     '';
   };
 
