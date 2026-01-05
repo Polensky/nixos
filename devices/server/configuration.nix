@@ -19,6 +19,8 @@ in {
 
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
+  virtualisation.docker.enable = true;
+
   services.openssh.enable = true;
 
   services.pocketbase = {
@@ -31,6 +33,10 @@ in {
     enable = true;
     virtualHosts."mealie.polensky.me".extraConfig = ''
       reverse_proxy http://127.0.0.1:9000
+    '';
+
+    virtualHosts."jelly.polensky.me".extraConfig = ''
+      reverse_proxy http://127.0.0.1:8096
     '';
 
     virtualHosts."pb.polensky.me".extraConfig = ''
@@ -150,6 +156,7 @@ in {
       3000 # grafana
       8096 # jellyfin
       9091 # transmission
+      9191 # dispatcharr
       9000 # mealie
       8989 # sonarr
       10222 # taskchampion-sync-server
@@ -162,7 +169,7 @@ in {
   time.timeZone = "America/Toronto";
 
   users.users."${user}" = {
-    extraGroups = ["wheel" "transmission" "jellyfin" "polensky"];
+    extraGroups = ["wheel" "transmission" "jellyfin" "polensky" "docker"];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC6O2MJqR+P/FwRyVSz1HWYhMtIwh16ozBU71Y2vf0oNDQ6DZ5T8Bvp5/4uSJgS8lOl3qYyNy0e0zJMIyfFVJnu89ycKBEdixA4HqWOUQGiyvn1C4s740jHolOzN1xNB24PDXFz0vHcVb+G5nU/xeKeaq0vrszrkK2zctqXshw94/x3ah0m3fr5CwM4S2RY/VODOdt11fllFEvN8HGE2mQTPn5sJzwtGW20npQ5iJ7ShugPbC4D1G2JU1R7MqkvWEpq9OFVb1prTpJM+i/lcqCn3lBv8XxpKKnD3q+48eeO1geosAsG/kgUWPDildbzcSfytgj7/TCTujx2ow4ZUfS4kWUrNaXM3M99SG61rFN7zLMAv14SOSsgegmX3q0ZAwOieUhCifqIqdfFr5QjEUP11ALofYRC6567X1YrEVXZFFnZSXMKGkBKpTxx0jaTTGnFSd6F49kDlI30cKJnVUgAK5nESissdEFn3UGRSFfxmjZkYvhY5l3LqtbO3kEutJU= polen@polen-xps"
