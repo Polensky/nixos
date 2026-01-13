@@ -32,6 +32,14 @@
           ./modules
         ];
       };
+      asus = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;};
+        system = "x86_64-linux";
+        modules = [
+          ./devices/asus/configuration.nix
+          ./modules
+        ];
+      };
       server = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
         system = "x86_64-linux";
