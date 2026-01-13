@@ -21,7 +21,10 @@ in {
 
   virtualisation.docker.enable = true;
 
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings.PermitRootLogin = "no";
+  };
 
   services.pocketbase = {
     enable = true;
@@ -33,6 +36,10 @@ in {
     enable = true;
     virtualHosts."mealie.polensky.me".extraConfig = ''
       reverse_proxy http://127.0.0.1:9000
+    '';
+
+    virtualHosts."photos.polensky.me".extraConfig = ''
+      reverse_proxy http://192.168.1.165:2283
     '';
 
     virtualHosts."jelly.polensky.me".extraConfig = ''
@@ -50,8 +57,8 @@ in {
       }
     '';
 
-    virtualHosts."demo.polensky.me".extraConfig = ''
-      root * /srv/demo
+    virtualHosts."hobby.polensky.me".extraConfig = ''
+      root * /srv/hobby
       file_server
       try_files {path} /index.html
     '';
