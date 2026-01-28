@@ -4,12 +4,15 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    inputs.noctalia.nixosModules.default
   ];
+  services.noctalia-shell.enable = true;
 
   hardware.bluetooth = {
     enable = true;
@@ -18,6 +21,10 @@
   services.blueman.enable = true;
 
   services.openssh.enable = true;
+
+  services.power-profiles-daemon.enable = true;
+  services.upower.enable = true;
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -95,10 +102,12 @@
     libnotify
     bemenu
     pavucontrol
+    pamixer
     networkmanagerapplet
     wl-clipboard
     libsForQt5.qt5.qtquickcontrols2
     libsForQt5.qt5.qtgraphicaleffects
+    ntfs3g
 
     # Nix related
     nixfmt-classic
@@ -109,6 +118,7 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
+    withUWSM = true;
   };
 
   services.gvfs.enable = true;

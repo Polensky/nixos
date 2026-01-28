@@ -6,6 +6,10 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     vimix.url = "github:Polensky/vimix";
     sops-nix.url = "github:Mic92/sops-nix";
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
