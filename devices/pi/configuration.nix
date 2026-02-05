@@ -41,12 +41,6 @@ in {
     networkmanager.enable = true;
     wireless.enable = false;
     hostName = hostname;
-    firewall.allowedTCPPorts = [80 443];
-  };
-
-  services.pihole-ftl = {
-    enable = true;
-    openFirewallDHCP = true;
   };
 
   services.prometheus.exporters = {
@@ -68,10 +62,15 @@ in {
 
   users = {
     mutableUsers = false;
-    users."${user}" = {
-      isNormalUser = true;
-      #hashedPasswordFile = config.sops.secrets.pi_user_pass.path;
-      extraGroups = ["wheel" "pihole"];
+    users = {
+      "${user}" = {
+        isNormalUser = true;
+        #hashedPasswordFile = config.sops.secrets.pi_user_pass.path;
+        extraGroups = ["wheel"];
+      };
+      lauria = {
+        isNormalUser = true;
+      };
     };
   };
 
