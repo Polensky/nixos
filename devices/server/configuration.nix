@@ -64,6 +64,19 @@ in {
     '';
   };
 
+  services = {
+    ollama = {
+      enable = true;
+      openFirewall = true; # 11434
+      host = "0.0.0.0";
+      syncModels = true;
+      loadModels = [
+        "mistral:7b"
+        "phi3.5:3.8b"
+      ];
+    };
+  };
+
   # observability
   services = {
     grafana = {
