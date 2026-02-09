@@ -1,23 +1,17 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
-  user = "polen";
+{ config, pkgs, ... }:
+let user = "polen";
 in {
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
   boot.loader = {
     grub = {
       enable = true;
-      devices = ["/dev/sda"];
+      devices = [ "/dev/sda" ];
     };
   };
   #boot.kernelModules = ["msr"];
 
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   virtualisation.docker.enable = true;
 
@@ -70,10 +64,7 @@ in {
       openFirewall = true; # 11434
       host = "0.0.0.0";
       syncModels = true;
-      loadModels = [
-        "mistral:7b"
-        "phi3.5:3.8b"
-      ];
+      loadModels = [ "mistral:7b" "phi3.5:3.8b" ];
     };
   };
 
@@ -90,29 +81,19 @@ in {
     };
     prometheus = {
       enable = true;
-      exporters = {
-        node.enable = true;
-      };
-      scrapeConfigs = [
-        {
-          job_name = "node-exporters-lan";
-          static_configs = [
-            {
-              targets = ["127.0.0.1:9100"];
-              labels = {
-                instance = "server";
-              };
-            }
-          ];
-        }
-      ];
+      exporters = { node.enable = true; };
+      scrapeConfigs = [{
+        job_name = "node-exporters-lan";
+        static_configs = [{
+          targets = [ "127.0.0.1:9100" ];
+          labels = { instance = "server"; };
+        }];
+      }];
     };
   };
 
   systemd.services.jellyfin = {
-    environment = {
-      DOTNET_SYSTEM_IO_DISABLEFILELOCKING = "1";
-    };
+    environment = { DOTNET_SYSTEM_IO_DISABLEFILELOCKING = "1"; };
   };
 
   # media
@@ -158,13 +139,13 @@ in {
   fileSystems."/mnt/latoure-data" = {
     device = "latoure.local:/data";
     fsType = "nfs";
-    options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=600"];
+    options = [ "x-systemd.automount" "noauto" "x-systemd.idle-timeout=600" ];
   };
 
   fileSystems."/mnt/latoure-data1" = {
     device = "latoure.local:/data1";
     fsType = "nfs";
-    options = ["_netdev"];
+    options = [ "_netdev" ];
   };
 
   networking = {
@@ -189,11 +170,42 @@ in {
   time.timeZone = "America/Toronto";
 
   users.users."${user}" = {
-    extraGroups = ["wheel" "transmission" "jellyfin" "polensky" "docker"];
+    extraGroups = [ "wheel" "transmission" "jellyfin" "polensky" "docker" ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC6O2MJqR+P/FwRyVSz1HWYhMtIwh16ozBU71Y2vf0oNDQ6DZ5T8Bvp5/4uSJgS8lOl3qYyNy0e0zJMIyfFVJnu89ycKBEdixA4HqWOUQGiyvn1C4s740jHolOzN1xNB24PDXFz0vHcVb+G5nU/xeKeaq0vrszrkK2zctqXshw94/x3ah0m3fr5CwM4S2RY/VODOdt11fllFEvN8HGE2mQTPn5sJzwtGW20npQ5iJ7ShugPbC4D1G2JU1R7MqkvWEpq9OFVb1prTpJM+i/lcqCn3lBv8XxpKKnD3q+48eeO1geosAsG/kgUWPDildbzcSfytgj7/TCTujx2ow4ZUfS4kWUrNaXM3M99SG61rFN7zLMAv14SOSsgegmX3q0ZAwOieUhCifqIqdfFr5QjEUP11ALofYRC6567X1YrEVXZFFnZSXMKGkBKpTxx0jaTTGnFSd6F49kDlI30cKJnVUgAK5nESissdEFn3UGRSFfxmjZkYvhY5l3LqtbO3kEutJU= polen@polen-xps"
     ];
+  };
+
+  # Luna user for OpenClaw AI assistant
+  users.users.luna = {
+    isSystemUser = true;
+    group = "luna";
+    home = "/var/lib/luna";
+    createHome = true;
+    shell = pkgs.bash;
+  };
+  users.groups.luna = { };
+
+  # Enable lingering for luna's systemd user services (runs at boot without login)
+  system.activationScripts.enableLingeringLuna = ''
+    ${pkgs.systemd}/bin/loginctl enable-linger luna || true
+  '';
+
+  # SOPS secrets for Luna (OpenClaw)
+  sops = {
+    defaultSopsFile = ../../secrets/secrets.yaml;
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    secrets = {
+      luna-telegram-token = {
+        owner = "luna";
+        group = "luna";
+      };
+      luna-gateway-token = {
+        owner = "luna";
+        group = "luna";
+      };
+    };
   };
   environment.systemPackages = with pkgs; [
     neovim
@@ -218,8 +230,8 @@ in {
 
   nixpkgs.config.allowUnfree = true;
   nix = {
-    settings.experimental-features = ["nix-command" "flakes"];
-    settings.trusted-users = ["polen"];
+    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings.trusted-users = [ "polen" ];
     # settings.extra-platforms = config.boot.binfmt.emulatedSystems;
     gc = {
       automatic = true;
