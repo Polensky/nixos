@@ -1,5 +1,1 @@
-{...}: {
-  imports = [
-    ./pocketbase.nix
-  ];
-}
+{ ... }: { imports = [ ./pocketbase.nix ]; }

@@ -1,12 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running 'nixos-help').
-{
-  config,
-  pkgs,
-  inputs,
-  ...
-}: {
+{ config, pkgs, inputs, ... }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -29,14 +24,14 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.kernelModules = ["msr"];
+  boot.kernelModules = [ "msr" ];
 
   networking.hostName = "xps13"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   nix = {
-    settings.experimental-features = ["nix-command" "flakes"];
-    settings.trusted-users = ["polen"];
+    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings.trusted-users = [ "polen" ];
     settings.extra-platforms = config.boot.binfmt.emulatedSystems;
     gc = {
       automatic = true;
@@ -44,7 +39,7 @@
       options = "--delete-older-than 15d";
     };
   };
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -68,14 +63,14 @@
 
   services.displayManager.sddm = {
     enable = true;
-    theme = "${import ./sddm-theme.nix {inherit pkgs;}}";
+    theme = "${import ./sddm-theme.nix { inherit pkgs; }}";
   };
 
   # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.polen = {
     isNormalUser = true;
     description = "polen";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.zsh;
   };
 
@@ -134,7 +129,7 @@
   programs.seahorse.enable = true;
 
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";

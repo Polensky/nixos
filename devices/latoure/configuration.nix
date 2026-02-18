@@ -1,11 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running 'nixos-help').
-{
-  config,
-  pkgs,
-  ...
-}: {
+{ config, pkgs, ... }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -35,7 +31,7 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   #nix.settings.trusted-users = [ "polen" "polensky" ];
   #nix.settings.extra-platforms = config.boot.binfmt.emulatedSystems;
   #boot.binfmt.emulatedSystems = ["aarch64-linux"];
@@ -98,7 +94,7 @@
   users.users.polensky = {
     isNormalUser = true;
     description = "polensky";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.zsh;
   };
 
@@ -109,13 +105,7 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    htop-vim
-    ranger
-    neovim
-    wget
-    git
-  ];
+  environment.systemPackages = with pkgs; [ htop-vim ranger neovim wget git ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

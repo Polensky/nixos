@@ -1,16 +1,11 @@
-{
-  inputs,
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
+{ inputs, config, pkgs, lib, ... }:
+let
   user = "polen";
   hostname = "pi";
 in {
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_rpi3;
-    initrd.availableKernelModules = ["xhci_pci" "usbhid" "usb_storage"];
+    initrd.availableKernelModules = [ "xhci_pci" "usbhid" "usb_storage" ];
     loader = {
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
@@ -21,16 +16,14 @@ in {
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";
       fsType = "ext4";
-      options = ["noatime"];
+      options = [ "noatime" ];
     };
   };
 
-  swapDevices = [
-    {
-      device = "/var/lib/swapfile";
-      size = 10 * 1024;
-    }
-  ];
+  swapDevices = [{
+    device = "/var/lib/swapfile";
+    size = 10 * 1024;
+  }];
 
   #sops.defaultSopsFile = ../../secrets/secrets.yaml;
   #sops.defaultSopsFormat = "yaml";
@@ -48,15 +41,9 @@ in {
     node.openFirewall = true;
   };
 
-  nix.settings.trusted-users = [user];
+  nix.settings.trusted-users = [ user ];
 
-  environment.systemPackages = with pkgs; [
-    htop-vim
-    neovim
-    curl
-    wget
-    ranger
-  ];
+  environment.systemPackages = with pkgs; [ htop-vim neovim curl wget ranger ];
 
   services.openssh.enable = true;
 
@@ -66,11 +53,9 @@ in {
       "${user}" = {
         isNormalUser = true;
         #hashedPasswordFile = config.sops.secrets.pi_user_pass.path;
-        extraGroups = ["wheel"];
+        extraGroups = [ "wheel" ];
       };
-      lauria = {
-        isNormalUser = true;
-      };
+      lauria = { isNormalUser = true; };
     };
   };
 

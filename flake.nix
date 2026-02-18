@@ -46,12 +46,15 @@
           specialArgs = { inherit inputs; };
           system = "x86_64-linux";
           modules = [
+            { nixpkgs.overlays = [ nix-openclaw.overlays.default ]; }
+
             disko.nixosModules.disko
             sops-nix.nixosModules.sops
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "backup";
               home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.users.luna = import ./devices/server/luna.nix;
             }

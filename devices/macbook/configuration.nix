@@ -1,11 +1,5 @@
-{
-  pkgs,
-  inputs,
-  system,
-  config,
-  ...
-}: let
-  my-emacs = pkgs.emacsNativeComp;
+{ pkgs, inputs, system, config, ... }:
+let my-emacs = pkgs.emacsNativeComp;
 in {
   nixpkgs.config.allowUnfree = true;
 
@@ -24,7 +18,7 @@ in {
     colima
     git
     gnupg
-    (pass.withExtensions (exts: [exts.pass-otp]))
+    (pass.withExtensions (exts: [ exts.pass-otp ]))
 
     # emacs
     my-emacs
@@ -90,9 +84,7 @@ in {
   programs.direnv.enable = true;
   programs.gnupg.agent.enable = true;
 
-  services.yabai = {
-    enable = true;
-  };
+  services.yabai = { enable = true; };
   services.skhd.enable = true;
 
   services.emacs = {
@@ -107,15 +99,13 @@ in {
 
   system.defaults.dock = {
     autohide = true;
-    persistent-apps = [];
+    persistent-apps = [ ];
     show-recents = false;
     static-only = true;
     tilesize = 32;
   };
 
-  system.defaults.menuExtraClock = {
-    Show24Hour = true;
-  };
+  system.defaults.menuExtraClock = { Show24Hour = true; };
 
   launchd.user.agents.remap-keys = {
     serviceConfig = {
@@ -123,7 +113,8 @@ in {
         "/usr/bin/hidutil"
         "property"
         "--set"
-        ''          {
+        ''
+          {
                     "UserKeyMapping":[
                     {"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E7}
                     ]

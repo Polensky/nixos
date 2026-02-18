@@ -1,10 +1,5 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
-  cfg = config.services.pocketbase;
+{ config, pkgs, lib, ... }:
+let cfg = config.services.pocketbase;
 in {
   options.services.pocketbase = {
     enable = lib.mkEnableOption "PocketBase backend";
@@ -12,7 +7,8 @@ in {
     dataDir = lib.mkOption {
       type = lib.types.path;
       default = "/var/lib/pocketbase";
-      description = "Working directory containing the PocketBase binary and data.";
+      description =
+        "Working directory containing the PocketBase binary and data.";
     };
 
     openFirewall = lib.mkOption {
@@ -47,19 +43,18 @@ in {
       description = "Log file used for both stdout and stderr.";
     };
 
-    package = lib.mkPackageOption pkgs "pocketbase" {};
+    package = lib.mkPackageOption pkgs "pocketbase" { };
   };
 
   config = lib.mkIf cfg.enable {
     # Optional: ensure the directory exists with proper ownership
-    systemd.tmpfiles.rules = [
-      "d ${cfg.dataDir} 0700 ${cfg.user} ${cfg.group} -"
-    ];
+    systemd.tmpfiles.rules =
+      [ "d ${cfg.dataDir} 0700 ${cfg.user} ${cfg.group} -" ];
 
     systemd.services.pocketbase = {
       description = "PocketBase";
-      wantedBy = ["multi-user.target"];
-      after = ["network.target"];
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network.target" ];
 
       serviceConfig = {
         Type = "simple";
@@ -71,7 +66,11 @@ in {
         WorkingDirectory = cfg.dataDir;
 
         ExecStart = ''
-          ${lib.getExe cfg.package} serve --dir ${cfg.dataDir}/pb_data --http=0.0.0.0:${toString cfg.port}
+          ${
+            lib.getExe cfg.package
+          } serve --dir ${cfg.dataDir}/pb_data --http=0.0.0.0:${
+            toString cfg.port
+          }
         '';
 
         # Switch to systemd stdout/stderr logging by default
@@ -80,8 +79,7 @@ in {
         StandardError = "append:${cfg.logFile}";
       };
     };
-    networking.firewall = lib.mkIf cfg.openFirewall {
-      allowedTCPPorts = [cfg.port];
-    };
+    networking.firewall =
+      lib.mkIf cfg.openFirewall { allowedTCPPorts = [ cfg.port ]; };
   };
 }
