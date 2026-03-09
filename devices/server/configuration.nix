@@ -65,7 +65,7 @@ in {
       host = "0.0.0.0";
       syncModels = true;
       loadModels =
-        [ "qwen3:4b" "lfm2.5-thinking:1.2b" "ministral-3:8b" "ministral-3:3b" ];
+        [ "qwen3-embedding:8b" ];
     };
   };
 
@@ -162,7 +162,6 @@ in {
       9000 # mealie
       8989 # sonarr
       10222 # taskchampion-sync-server
-      18789 # openclaw
     ];
     firewall.allowedUDPPorts = [
       5353 # mDNS
@@ -182,35 +181,11 @@ in {
   };
   users.groups.polen = { };
 
-  # Luna user for OpenClaw AI assistant
-  users.users.luna = {
-    isSystemUser = true;
-    group = "luna";
-    home = "/var/lib/luna";
-    createHome = true;
-    shell = pkgs.bash;
-  };
-  users.groups.luna = { };
-
-  # Enable lingering for luna's systemd user services (runs at boot without login)
-  system.activationScripts.enableLingeringLuna = ''
-    ${pkgs.systemd}/bin/loginctl enable-linger luna || true
-  '';
-
-  # SOPS secrets for Luna (OpenClaw)
+  # SOPS secrets
   sops = {
     defaultSopsFile = ../../secrets/secrets.yaml;
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-    secrets = {
-      luna_telegram_token = {
-        owner = "luna";
-        group = "luna";
-      };
-      luna_gateway_token = {
-        owner = "luna";
-        group = "luna";
-      };
-    };
+    secrets = { };
   };
 
   environment.systemPackages = with pkgs; [

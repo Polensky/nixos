@@ -116,6 +116,12 @@
     withUWSM = true;
   };
 
+  programs.weylus = {
+    enable = true;
+    users = [ "polen" ];
+    openFirewall= true;
+  };
+
   services.gvfs.enable = true;
 
   # to make pass work
