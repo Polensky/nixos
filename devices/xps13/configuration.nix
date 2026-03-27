@@ -11,13 +11,13 @@
 
   hardware.bluetooth = {
     enable = true;
-    powerOnBoot = true;
+    powerOnBoot = false;
   };
   services.blueman.enable = true;
 
   services.openssh.enable = true;
 
-  services.power-profiles-daemon.enable = true;
+  services.power-profiles-daemon.enable = false;
   services.upower.enable = true;
 
   # Bootloader.
@@ -25,6 +25,10 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.kernelModules = [ "msr" ];
+
+  boot.extraModprobeConfig = ''
+    options snd_hda_intel power_save=1
+  '';
 
   networking.hostName = "xps13"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -64,6 +68,7 @@
   services.displayManager.sddm = {
     enable = true;
     theme = "${import ./sddm-theme.nix { inherit pkgs; }}";
+    package = pkgs.kdePackages.sddm;
   };
 
   # Define a user account. Don't forget to set a password with 'passwd'.
@@ -100,12 +105,10 @@
     pamixer
     networkmanagerapplet
     wl-clipboard
-    libsForQt5.qt5.qtquickcontrols2
-    libsForQt5.qt5.qtgraphicaleffects
     ntfs3g
 
-    # Nix related
-    nixfmt-classic
+    kdePackages.qtdeclarative
+    kdePackages.qtsvg
   ];
 
   programs.zsh.enable = true;
@@ -119,7 +122,7 @@
   programs.weylus = {
     enable = true;
     users = [ "polen" ];
-    openFirewall= true;
+    openFirewall = true;
   };
 
   services.gvfs.enable = true;

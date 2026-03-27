@@ -18,15 +18,21 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    brigitte.url = "git+ssh://git@github.com/Polensky/brigitte";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   outputs = { nixpkgs, nix-darwin, sops-nix, disko, home-manager
-    , ... }@inputs: {
+    , nixos-hardware, ... }@inputs: {
       nixosConfigurations = {
         default = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           system = "x86_64-linux";
-          modules = [ ./devices/xps13/configuration.nix ./modules ];
+          modules = [
+            nixos-hardware.nixosModules.dell-xps-13-9370
+            ./devices/xps13/configuration.nix
+            ./modules
+          ];
         };
         latoure = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
@@ -46,6 +52,7 @@
             sops-nix.nixosModules.sops
             ./devices/server/configuration.nix
             ./modules
+            inputs.brigitte.nixosModules.default
           ];
         };
         pi = nixpkgs.lib.nixosSystem {

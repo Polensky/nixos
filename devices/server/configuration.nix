@@ -40,6 +40,14 @@ in {
       reverse_proxy http://127.0.0.1:8096
     '';
 
+    virtualHosts."grafana.polensky.me".extraConfig = ''
+      reverse_proxy http://127.0.0.1:3000
+    '';
+
+    virtualHosts."brigitte.polensky.me".extraConfig = ''
+      reverse_proxy http://127.0.0.1:4000
+    '';
+
     virtualHosts."pb.polensky.me".extraConfig = ''
       request_body {
         max_size 10MB
@@ -65,8 +73,16 @@ in {
       host = "0.0.0.0";
       syncModels = true;
       loadModels =
-        [ "qwen3-embedding:8b" ];
+        [ "qwen3-embedding:8b" "mistral:7b" ];
     };
+  };
+
+  services.brigitte = {
+    enable = true;
+    host = "brigitte.polensky.me";
+    environmentFile = "/var/lib/brigitte/brigitte.env";
+    database.enable = true;
+    garage.enable = true;
   };
 
   # observability
@@ -82,14 +98,26 @@ in {
     };
     prometheus = {
       enable = true;
-      exporters = { node.enable = true; };
-      scrapeConfigs = [{
-        job_name = "node-exporters-lan";
-        static_configs = [{
-          targets = [ "127.0.0.1:9100" ];
-          labels = { instance = "server"; };
-        }];
-      }];
+      exporters = { 
+        node.enable = true; 
+        systemd.enable = true;
+      };
+      scrapeConfigs = [
+        {
+          job_name = "node-exporters-lan";
+          static_configs = [{
+            targets = [ "127.0.0.1:9100" ];
+            labels = { instance = "server"; };
+          }];
+        }
+        {
+          job_name = "systemd-exporters-lan";
+          static_configs = [{
+            targets = [ "127.0.0.1:9558" ];
+            labels = { instance = "server"; };
+          }];
+        }
+      ];
     };
   };
 
@@ -162,6 +190,8 @@ in {
       9000 # mealie
       8989 # sonarr
       10222 # taskchampion-sync-server
+      51966 # for ssh
+      4000 # for brigitte
     ];
     firewall.allowedUDPPorts = [
       5353 # mDNS
