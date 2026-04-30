@@ -44,10 +44,6 @@ in {
       reverse_proxy http://127.0.0.1:3000
     '';
 
-    virtualHosts."brigitte.polensky.me".extraConfig = ''
-      reverse_proxy http://127.0.0.1:4000
-    '';
-
     virtualHosts."pb.polensky.me".extraConfig = ''
       request_body {
         max_size 10MB
@@ -64,6 +60,10 @@ in {
       file_server
       try_files {path} /index.html
     '';
+
+    virtualHosts."prixdugaz.ca".extraConfig = ''
+      reverse_proxy http://127.0.0.1:8080
+    '';
   };
 
   services = {
@@ -73,16 +73,13 @@ in {
       host = "0.0.0.0";
       syncModels = true;
       loadModels =
-        [ "qwen3-embedding:8b" "mistral:7b" ];
+        [ "qwen3-embedding:0.6b" ];
     };
   };
 
-  services.brigitte = {
+  services.prixdugaz = {
     enable = true;
-    host = "brigitte.polensky.me";
-    environmentFile = "/var/lib/brigitte/brigitte.env";
-    database.enable = true;
-    garage.enable = true;
+    openFirewall = true; # 8080
   };
 
   # observability
@@ -90,6 +87,7 @@ in {
     grafana = {
       enable = true;
       settings = {
+        security.secret_key = "SW2YcwTIb9zpOOhoPsMm";
         server = {
           http_addr = "0.0.0.0";
           http_port = 3000;

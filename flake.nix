@@ -18,7 +18,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    brigitte.url = "git+ssh://git@github.com/Polensky/brigitte";
+    prixdugaz.url = "git+ssh://git@github.com/Polensky/prixdugaz";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
@@ -52,7 +52,7 @@
             sops-nix.nixosModules.sops
             ./devices/server/configuration.nix
             ./modules
-            inputs.brigitte.nixosModules.default
+            inputs.prixdugaz.nixosModules.default
           ];
         };
         pi = nixpkgs.lib.nixosSystem {
