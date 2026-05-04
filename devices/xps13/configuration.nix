@@ -97,7 +97,7 @@
     # Desktop
     waybar
     mako
-    swww
+    awww
     wdisplays
     libnotify
     bemenu

@@ -66,17 +66,6 @@ in {
     '';
   };
 
-  services = {
-    ollama = {
-      enable = true;
-      openFirewall = true; # 11434
-      host = "0.0.0.0";
-      syncModels = true;
-      loadModels =
-        [ "qwen3-embedding:0.6b" ];
-    };
-  };
-
   services.prixdugaz = {
     enable = true;
     openFirewall = true; # 8080
@@ -189,7 +178,6 @@ in {
       8989 # sonarr
       10222 # taskchampion-sync-server
       51966 # for ssh
-      4000 # for brigitte
     ];
     firewall.allowedUDPPorts = [
       5353 # mDNS
